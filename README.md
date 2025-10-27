@@ -94,11 +94,11 @@ graph TD
     A[Inicio del Servicio] --> B{Cargar Configuración};
     B --> C[Descifrar Cadenas de Conexión y Credenciales];
     C --> D[Bucle de Monitorización Continua];
-    D --> E[Obtener Estado del Proceso/Tarea (usando psutil)];
+    D --> E[Obtener Estado del Proceso];
     E --> F{¿Estado OK y dentro de Umbrales?};
-    F -- Sí --> G[Registrar Status Normal (Log Local)];
+    F -- Sí --> G[Registrar Status Normal - Log Local];
     F -- No --> H[Generar Alerta de Fallo/Anomalía];
-    H --> I[Enviar Notificación (a través de Slack API)];
+    H --> I[Enviar Notificación a través de Slack API];
     G --> J[Esperar Intervalo de Tiempo];
     I --> J;
     J --> D;
