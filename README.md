@@ -10,7 +10,7 @@ El **objetivo principal** es automatizar la supervisión de procesos críticos, 
 
 ## ⚙️ Tecnologías Usadas
 
-El proyecto se construyó utilizando un *stack* de tecnologías enfocado en la fiabilidad, el rendimiento, la seguridad y la interoperabilidad con sistemas de bajo nivel y servicios externos.
+El proyecto se construyó utilizando un *stack* de tecnologías enfocado en la fiabilidad, el rendimiento, la **seguridad** y la integración de servicios.
 
   * **Lenguaje de Programación:** Python 🐍
       * *Razón:* Amplia librería para interacción con el sistema operativo y desarrollo rápido.
@@ -20,7 +20,7 @@ El proyecto se construyó utilizando un *stack* de tecnologías enfocado en la f
   * **Sistema de Notificaciones:** **Slack API** 💬
       * *Razón:* Envío de alertas y reportes en tiempo real a canales designados.
   * **Seguridad de la Configuración:** **Librería de Cifrado** (ej. `cryptography`)
-      * *Razón:* Protección de datos sensibles, como tokens y credenciales de acceso.
+      * *Razón:* Protección de datos sensibles, como tokens de Slack y otras credenciales de acceso, asegurando que las cadenas de conexión estén cifradas en reposo.
   * **Librerías Clave (Ejemplos):**
       * `psutil`: Para acceder a la información de procesos y utilización del sistema.
       * Librerías específicas para la interacción con la API de Slack.
@@ -35,7 +35,7 @@ A continuación se detalla cómo configurar y ejecutar la solución en un entorn
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone https://github.com/YuridiaPerez/MonitorsTasks.git
+    git clone https://github.com/YuridiaPerez/MonitorTasks.git
     cd MonitorTasks
     ```
 2.  **Crear un entorno virtual (opcional pero recomendado):**
@@ -77,14 +77,48 @@ Este proyecto permitió desarrollar y aplicar habilidades críticas en la ingeni
 
 | Habilidad Demostrada | Lección Aprendida |
 | :--- | :--- |
-| **Integración con APIs Externas** | Implementación exitosa y gestión de la **API de Slack** para un sistema de alertas proactivo y centralizado. |
 | **Implementación de Seguridad** | La necesidad crítica de **cifrar las cadenas de conexión y credenciales** para evitar la exposición de datos sensibles en repositorios o entornos de despliegue. |
-| **Programación de Sistemas (Python)** | Dominio de la interacción a bajo nivel con el sistema operativo para la gestión de procesos. |
+| **Integración con APIs Externas** | Implementación exitosa y gestión de la **API de Slack** para un sistema de alertas proactivo y centralizado. |
+| **Programación de Sistemas (Python)** | Dominio de la interacción a bajo nivel con el sistema operativo para la gestión de procesos y tareas. |
+| **Diseño de Arquitecturas Modulares** | Separación clara entre la lógica de monitorización, el cifrado, la configuración y el mecanismo de notificación para facilitar el mantenimiento. |
 | **Gestión de Recursos y Tareas** | La importancia de la monitorización continua para mantener la estabilidad del sistema y prevenir fallos catastróficos. |
-| **Diseño de Arquitecturas Modulares** | Separación clara entre la lógica de monitorización, el cifrado, la configuración y el mecanismo de notificación. |
+
+-----
+
+## 📊 Diagrama de Flujo de la Aplicación
+
+El siguiente diagrama muestra el flujo de trabajo principal del servicio de monitorización:
+
+```mermaid
+graph TD
+    A[Inicio del Servicio] --> B{Cargar Configuración};
+    B --> C[Descifrar Cadenas de Conexión y Credenciales];
+    C --> D[Bucle de Monitorización Continua];
+    D --> E[Obtener Estado del Proceso/Tarea (usando psutil)];
+    E --> F{¿Estado OK y dentro de Umbrales?};
+    F -- Sí --> G[Registrar Status Normal (Log Local)];
+    F -- No --> H[Generar Alerta de Fallo/Anomalía];
+    H --> I[Enviar Notificación (a través de Slack API)];
+    G --> J[Esperar Intervalo de Tiempo];
+    I --> J;
+    J --> D;
+```
+
+**Flujo en Texto:**
+
+1.  **Inicio del Servicio:** La aplicación comienza a ejecutarse.
+2.  **Cargar Configuración:** Lee el archivo de configuración, que incluye las tareas a vigilar y las credenciales cifradas.
+3.  **Descifrar Credenciales:** Utiliza la clave de entorno para **descifrar de forma segura las cadenas de conexión** de la API de Slack.
+4.  **Bucle de Monitorización:** Entra en un ciclo infinito de vigilancia.
+5.  **Obtener Estado:** Consulta el estado y los recursos (CPU/Memoria) de la tarea o proceso objetivo.
+6.  **Verificar Umbrales:** Comprueba si el estado es anómalo (caído, usando demasiados recursos, etc.).
+7.  **Ruta Normal:** Si está bien, registra el estado en el **Log Local**.
+8.  **Ruta de Alerta:** Si hay un fallo, genera un mensaje de alerta.
+9.  **Notificación Externa:** Envía el mensaje de alerta inmediatamente a través de la **Slack API**.
+10. **Espera e Iteración:** Espera el intervalo de tiempo configurado y repite el ciclo.
 
 -----
 
 ## 🏷️ Etiquetas (Topics)
 
-`system-monitoring` | `hardware-management` | `python` | `process-management` | `automation` | `task-scheduler` | `slack-api` | `encryption` | `security` | `devops`
+`system-monitoring` | `hardware-management` | `python` | `process-management` | `automation` | `task-scheduler` | `slack-api` | `encryption` | `security` | `devops` | `system-utilities`
